@@ -54,8 +54,8 @@ public class Main {
 
 
 
-        Player availableCars = new Player(0,1000000);
-        Player player1 = new Player(1,1000);
+        Player availableCars = new Player(1000000);
+        Player player1 = new Player(1000);
         int randCars = ThreadLocalRandom.current().nextInt(5, 11);
         Car[] startingCars = new Car[randCars];
         //public List<Car> newCars = new List<Car>();
@@ -83,8 +83,34 @@ public class Main {
             }
             var newCar = new Car(randMoney,randomProducer,randMileage,randomColor,randomClassification,part1,part2,part3,part4,part5,randLoadingSpace);
             startingCars[i] = newCar;
-            System.out.println(startingCars[i]);
+            //System.out.println(startingCars[i]);
             i++;
+        }
+        //CLIENTS-------------------------------------------------------------------------------------------------------
+        List<Client> clients = new ArrayList<Client>();
+        String randomProducer1="";
+        String randomProducer2="";
+        Boolean destroyedCar=false;
+        String typeOfCar="";
+        int trueOrFalse = ThreadLocalRandom.current().nextInt(0, 2);
+        for(int x=0;x<3;x++)
+        {
+            randMoney = ThreadLocalRandom.current().nextInt(1000, 2000);
+            randIndex = rand.nextInt(producers.size());
+            randomProducer1 = producers.get(randIndex);
+            do {
+                randIndex = rand.nextInt(producers.size());
+                randomProducer2 = producers.get(randIndex);
+            }while (randomProducer2==randomProducer1);
+            var percent = Math.random();
+            if(percent<0.9) destroyedCar=false;
+            else destroyedCar=true;
+            trueOrFalse = ThreadLocalRandom.current().nextInt(0, 2);
+            if(trueOrFalse==0)  typeOfCar="Dostawczak";
+            else typeOfCar="Osobowka";
+            Client newStartingClient = new Client(randMoney,randomProducer1,randomProducer2,typeOfCar,destroyedCar);
+            clients.add(newStartingClient);
+            System.out.println("Klient:"+x+clients.get(x)) ;
         }
         //TEST CODE-----------------------------------------------------------------------------------------------------
         //MENU
@@ -101,6 +127,7 @@ public class Main {
             switch (menuChose) {
                 case 1:
                     System.out.println("Start gry");
+                    player1.startGame();
                     break;
                 case 2:
                     System.out.println("Celem gry jest podwojenie poczatkowej gotowki  w jak najmniejszej ilczbie ruchow.Jeden ruch to zakup auta/sprzedaz auta/naprawienie jednego elementu/dodanie jednej reklamy. Przeglądanie stanu konta, historii transakcji, baz klientow, posiadanych pojazdow i pojazdow dostępnych do kupienia nie oznacza wykorzystania ruchu.");
