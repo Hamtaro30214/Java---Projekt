@@ -2,24 +2,29 @@ package com.company;
 
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private Integer money;
-    private Car[] garage;
+    private ArrayList<Car> garage;
 
     public Player(Integer money)
     {
         this.money=money;
-        this.garage=new Car[100];
+        this.garage=new ArrayList<Car>();
     }
 
     public Car getCar(int placeInGarage)
     {
-        return this.garage[placeInGarage];
+        return this.garage.get(placeInGarage);
     }
-    public void setCar(Car car, int placeInGarage)
+    public void setCar(Car car)
     {
-        this.garage[placeInGarage]=car;
+        this.garage.add(car);
+    }
+    public void removeCar(Car car)
+    {
+        this.garage.remove(car);
     }
     public Integer getMoney()
     {
@@ -34,7 +39,6 @@ public class Player {
     {
         return " Gotowka: " + money;
     }
-
 
 
 
