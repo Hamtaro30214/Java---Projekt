@@ -19,4 +19,3 @@ public class Player {
         this.garage=new Car[0];
     }
 }
-
