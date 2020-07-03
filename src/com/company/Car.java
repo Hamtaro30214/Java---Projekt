@@ -36,20 +36,21 @@ public class Car {
     public Integer getPrice() {return this.price;}
     public void setPrice(Integer cost) {this.price=cost;}
     public String toString() {
-        if(mileage!=null) {
-            String space;
-            if (loadingSpace > 60) space = "Dostawczak";
-            else space = "Osobówka";
-            return carID + ". Cena:" + price + "$, Producent:" + producer + ", Przebieg:" + mileage + "km, Kolor:" + color +
-                    ", Segment:" + classification + space + ", Status hamulców:" + brakesStatus + ", Status zawieszenia:" +
-                    suspensionStatus + ", Status silnika:" + engineStatus + ", Status koreserii:" + bodyStatus +
-                    ", Status skrzyni biegów:" + gearboxStatus;
-        }
-        return "Auto niedostępne.";
+        if(mileage==null){}
+
+        String space;
+        if (loadingSpace > 60) space = "Dostawczak";
+        else space = "Osobówka";
+        return carID + ". Cena:" + price + "$, Producent:" + producer + ", Przebieg:" + mileage + "km, Kolor:" + color +
+                ", Segment:" + classification + space + ", Status hamulców:" + brakesStatus + ", Status zawieszenia:" +
+                suspensionStatus + ", Status silnika:" + engineStatus + ", Status koreserii:" + bodyStatus +
+                ", Status skrzyni biegów:" + gearboxStatus;
+
+
     }
     public String showBasicInfo() {
         if(mileage!=null) {
-            if (!suspensionStatus) {
+            if (suspensionStatus!=null) {
                 String space;
                 if (loadingSpace > 60) space = "Dostawczak";
                 else space = "Osobówka";
@@ -63,6 +64,6 @@ public class Car {
                         ", Typ samochodu:"+space+", Zepsute części:" + amountOfDestroyedParts;
             }
         }
-        return "Auto niedostępne.";
+        else return "Auto niedostępne.";
     }
 }

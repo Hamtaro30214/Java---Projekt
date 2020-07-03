@@ -5,15 +5,12 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DefaultLists {
-    public String name;
-    public DefaultLists(String name) {
-        this.name=name;
-    }
+    public DefaultLists() { }
 
     //DEFAULT VALUES/VARIABLES------------------------------------------------------------------------------------------
     static String randomProducer1, randomProducer2, typeOfCar, randomProducer, randomColor, randomClassification;
     static Integer randMoney=0, randIndex=0, trueOrFalse=0, randMileage=0, randLoadingSpace=0,lastCarID=0,
-            numberOfBrokenParts=0, numberOfStartingCars=0;
+            numberOfBrokenParts=0;
     static Boolean destroyedCar, part1, part2, part3, part4, part5;
     static Random rand = new Random();
     //LISTS FOR CARS----------------------------------------------------------------------------------------------------
@@ -41,8 +38,8 @@ public class DefaultLists {
     }
     //CLIENTS-----------------------------------------------------------------------------------------------------------
     public static ArrayList<Client> clients = new ArrayList<Client>();
-    static {
-        for (int i = 0; i < 4; i++) {
+    public void generateClients(Integer numerOfClients){
+        for (int i = 0; i < numerOfClients; i++) {
             randMoney = ThreadLocalRandom.current().nextInt(1000, 2000);
             randIndex = rand.nextInt(DefaultLists.producers.size());
             randomProducer1 = producers.get(randIndex);
@@ -61,12 +58,10 @@ public class DefaultLists {
         }
     }
     //GENERATING RANDOM CARS--------------------------------------------------------------------------------------------
-    //public void generateCars()
     public static ArrayList<Car> carsToBuy = new ArrayList<Car>();
-    static {
-        numberOfStartingCars= ThreadLocalRandom.current().nextInt(5, 11);
+    public void generateCars(Integer numberOfCars) {
         int i = 0;
-        while (i < numberOfStartingCars) {
+        while (i < numberOfCars) {
             randMoney = ThreadLocalRandom.current().nextInt(200, 2800);
             randMileage = ThreadLocalRandom.current().nextInt(20000, 300000);
             randLoadingSpace = ThreadLocalRandom.current().nextInt(15, 100);
@@ -92,5 +87,10 @@ public class DefaultLists {
             i++;
             lastCarID = i;
         }
+    }
+    public void generateStartingLists(){
+        generateClients(4);
+        Integer numberOfStartingCars=ThreadLocalRandom.current().nextInt(5, 11);
+        generateCars(numberOfStartingCars);
     }
 }

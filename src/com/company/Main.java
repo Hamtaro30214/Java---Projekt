@@ -1,6 +1,6 @@
 package com.company;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import static com.company.DefaultLists.*;
@@ -8,15 +8,25 @@ import static com.company.DefaultLists.*;
 public class Main {
 
     public static void main(String[] args) {
-        //RANDOM CARS ATTRIBUTES----------------------------------------------------------------------------------------
-        int randMoney = ThreadLocalRandom.current().nextInt(500, 3500);
+        DefaultLists startGame = new DefaultLists();
+        startGame.generateStartingLists();
         Player player1 = new Player(1000);
+        //MECHANICS-----------------------------------------------------------------------------------------------------
+        Mechanic janusz = new Mechanic(1,50,100,250,80,70);
+        Mechanic marian = new Mechanic(2,40,90,220,70,60);
+        Mechanic adrian = new Mechanic(3,25,70,130,50,45);
+        ArrayList<Mechanic> mechanics = new ArrayList<>();
+        mechanics.add(janusz);
+        mechanics.add(marian);
+        mechanics.add(adrian);
+
+        int randMoney = ThreadLocalRandom.current().nextInt(500, 3500);
         Scanner scan;
-        Integer startingMenu=0, gameMenu=0, scan1=0, scan2=0, priceOfCar, tax, fullPrice, lastCarSoldID=0, moves=0,
-                numberOfCarsInGarage=0, randNewspaper=0;
-        Boolean playerTurn=true,endOfgame=false;
+        Integer startingMenu=0, gameMenu=0, scan1=0, scan2=0, scan3=0, priceOfCar, tax, fullPrice, lastCarSoldID=0, moves=0,
+                numberOfCarsInGarage=0, randNewspaper=0, repairCost;
+        Boolean playerTurn=true,endOfgame=false, chanceForBrake1,chanceForBrake2,chanceForBrake3;
         Car localCar,carNotToSell,carNotToBuy;
-        //MENU
+        //MENU----------------------------------------------------------------------------------------------------------
         while (startingMenu!=3) {
             System.out.println("Witaj w grze AutoHandel.");
             System.out.println("Wybierz 1 aby rozpocząć grę.");
@@ -70,13 +80,228 @@ public class Main {
                         else for(int i=0;i<numberOfCarsInGarage;i++) System.out.println(player1.getCar(i));
                             break;
                         case 4: if(!playerTurn) System.out.println("Opcja niedostępna w tej turze.");
+                        else if(numberOfCarsInGarage.equals(0)) System.out.println("Nie posiadasz pojazdów w garażu.");
                         else {
+                            for(int i=0;i<numberOfCarsInGarage;i++) {
+                                System.out.println(player1.getCar(i));
+                            }
+                            System.out.println("Wybierz pojazd do naprawy:");
+                            scan = new Scanner(System.in);
+                            scan1 = scan.nextInt();
+                            localCar=player1.getCar(scan1);
+                            fullPrice=localCar.getPrice();
                             System.out.println("Wybierz jednego z poniższych mechaników.");
-                            System.out.println("1. Janusz - ma najdrozsze ceny ale 100% gwarancj.");
+                            System.out.println("1. Janusz - ma najdrozsze ceny ale 100% gwarancji.");
                             System.out.println("2. Marian - bierze zdecydowanie mniej niz Janusz, ale masz 10% szans, ze nie uda mu sie naprawic samochodu i konieczna będzie interwencja Janusza.");
                             System.out.println("3. Adrian - jest najtanszy, ale masz 20% szans, ze nie uda mu się naprawic i 2% szans, ze zepsuje cos innego podczas naprawy.");
+                            scan = new Scanner(System.in);
+                            scan2 = scan.nextInt();
+                            System.out.println("Wybierz część do naprawy: 1.Hamulce, 2.Zawieszenie, 3.Silnik, 4.Karoseria, 5.Skrzynia biegów.");
+                            scan = new Scanner(System.in);
+                            scan3 = scan.nextInt();
+                            var percent = Math.random();
+                            chanceForBrake1 = !(percent < 0.90);
+                            percent = Math.random();
+                            chanceForBrake2 = !(percent < 0.9);
+                            percent = Math.random();
+                            chanceForBrake3 = !(percent < 0.98);
+                            if(scan2==2){
+                                if(chanceForBrake1==true){
+                                    System.out.println("Marian nie naprawił częsci.");
+                                    break;
+                                }
+                            }
+                            if (scan3 == 3) {
+                                if(chanceForBrake2==true){
+                                    System.out.println("Adrian nie naprawił częsci.");
+                                    if(localCar.amountOfDestroyedParts!=5){
+                                        if(chanceForBrake3==true){
+                                            if(localCar.suspensionStatus!=true){
+                                                if(localCar.engineStatus!=true){
+                                                    if(localCar.engineStatus!=true){
+                                                        localCar.gearboxStatus=false;
+                                                    }
+                                                }
+                                                else localCar.engineStatus=false;
+                                            }
+                                            else localCar.suspensionStatus=false;
+                                        }
+                                        player1.setCar(localCar);
+                                    }
+                                    break;
+                                }
+                            }
+                            switch (scan3) {
+                                case 1:if(localCar.brakesStatus==true){
+                                    System.out.println("Hamulce nie wymagają naprawy.");
+                                    break;
+                                }
+                                    if(chanceForBrake1==true){
+                                        System.out.println("Marian nie naprawił częsci.");
+                                        break;
+                                    }
+                                    if(localCar.producer.equals("Opel") || localCar.producer.equals("Volkswagen")) {
+                                        repairCost=mechanics.get(scan2).brakesCost+100;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.brakesStatus=true;
+                                        fullPrice=fullPrice+fullPrice*10/100;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś zawieszenie za:"+repairCost);
+                                    }
+                                    if(localCar.producer.equals("Ford")) {
+                                        repairCost=mechanics.get(scan2).brakesCost+150;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.brakesStatus=true;
+                                        fullPrice=fullPrice+fullPrice*10/100;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś zawieszenie za:"+repairCost);
+                                    }
+                                    if (localCar.producer.equals("Audi") || localCar.producer.equals("Mercedes")) {
+                                        repairCost=mechanics.get(scan2).brakesCost+250;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.brakesStatus=true;
+                                        fullPrice=fullPrice+fullPrice*10/100;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś zawieszenie za:"+repairCost);
+                                    }
+                                    break;
+                                case 2:if(localCar.suspensionStatus==true){
+                                    System.out.println("Zawieszenie nie wymaga naprawy.");
+                                    break;
+                                }
+                                    if(localCar.producer.equals("Opel") || localCar.producer.equals("Volkswagen")) {
+                                        repairCost=mechanics.get(scan2).suspensionCost+100;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.suspensionStatus=true;
+                                        fullPrice=fullPrice+fullPrice*20/100;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś zawieszenie za:"+repairCost);
+                                    }
+                                    if(localCar.producer.equals("Ford")) {
+                                        repairCost=mechanics.get(scan2).suspensionCost+150;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.suspensionStatus=true;
+                                        fullPrice=fullPrice+fullPrice*20/100;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś zawieszenie za:"+repairCost);
+                                    }
+                                    if (localCar.producer.equals("Audi") || localCar.producer.equals("Mercedes")) {
+                                        repairCost=mechanics.get(scan2).suspensionCost+250;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.suspensionStatus=true;
+                                        fullPrice=fullPrice+fullPrice*20/100;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś zawieszenie za:"+repairCost);
+                                    }
+                                    break;
+                                case 3:if(localCar.engineStatus==true){
+                                    System.out.println("Silnik nie wymaga naprawy.");
+                                    break;
+                                }
+                                    if(localCar.producer.equals("Opel") || localCar.producer.equals("Volkswagen")) {
+                                        repairCost=mechanics.get(scan2).engineCost+100;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.engineStatus=true;
+                                        fullPrice=fullPrice+fullPrice;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś silnik za:"+repairCost);
+                                    }
+                                    if(localCar.producer.equals("Ford")) {
+                                        repairCost=mechanics.get(scan2).engineCost+150;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.engineStatus=true;
+                                        fullPrice=fullPrice+fullPrice;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś silnik za:"+repairCost);
+                                    }
+                                    if (localCar.producer.equals("Audi") || localCar.producer.equals("Mercedes")) {
+                                        repairCost=mechanics.get(scan2).engineCost+250;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.engineStatus=true;
+                                        fullPrice=fullPrice+fullPrice;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś silnik za:"+repairCost);
+                                    }
+                                    break;
+                                case 4:if(localCar.bodyStatus==true){
+                                    System.out.println("Karoseria nie wymaga naprawy.");
+                                    break;
+                                }
+                                    if(localCar.producer.equals("Opel") || localCar.producer.equals("Volkswagen")) {
+                                        repairCost=mechanics.get(scan2).bodyCost+100;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.bodyStatus=true;
+                                        fullPrice=fullPrice+fullPrice*50/100;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś karoseria za:"+repairCost);
+                                    }
+                                    if(localCar.producer.equals("Ford")) {
+                                        repairCost=mechanics.get(scan2).bodyCost+150;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.bodyStatus=true;
+                                        fullPrice=fullPrice+fullPrice*50/100;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś karoseria za:"+repairCost);
+                                    }
+                                    if (localCar.producer.equals("Audi") || localCar.producer.equals("Mercedes")) {
+                                        repairCost=mechanics.get(scan2).bodyCost+250;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.bodyStatus=true;
+                                        fullPrice=fullPrice+fullPrice*50/100;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś karoseria za:"+repairCost);
+                                    }
+                                    break;
+                                case 5:if(localCar.gearboxStatus==true) {
+                                    System.out.println("Skrzynia biegów nie wymaga naprawy.");
+                                    break;
+                                }
+                                    if(localCar.producer.equals("Opel") || localCar.producer.equals("Volkswagen")) {
+                                        repairCost=mechanics.get(scan2).gearboxCost+100;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.gearboxStatus=true;
+                                        fullPrice=fullPrice+fullPrice*50/100;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś karoseria za:"+repairCost);
+                                    }
+                                    if(localCar.producer.equals("Ford")) {
+                                        repairCost=mechanics.get(scan2).gearboxCost+150;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.gearboxStatus=true;
+                                        fullPrice=fullPrice+fullPrice*50/100;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś karoseria za:"+repairCost);
+                                    }
+                                    if (localCar.producer.equals("Audi") || localCar.producer.equals("Mercedes")) {
+                                        repairCost=mechanics.get(scan2).gearboxCost+250;
+                                        player1.setMoney(player1.getMoney()-repairCost);
+                                        localCar.gearboxStatus=true;
+                                        fullPrice=fullPrice+fullPrice*50/100;
+                                        localCar.setPrice(fullPrice);
+                                        player1.setCar(localCar);
+                                        System.out.println("Naprawiłeś karoseria za:"+repairCost);
+                                    }
+                                    break;
+                                default:
+                                    System.out.println("Podano błedną wartość.");
+                                    break;
+                            }
                             moves++;
-                            playerTurn=false;
+                            playerTurn = false;
                         }
                             break;
                         case 5: clients.forEach(System.out::println);
@@ -176,6 +401,7 @@ public class Main {
                                         System.out.println("Nie stać cię.");
                                     } else {
                                         player1.setMoney(player1.getMoney() - 250);
+                                        startGame.generateCars(2);
                                         System.out.println("Zyskałeś 2 klientów.");
                                     }
                                     break;
@@ -185,6 +411,7 @@ public class Main {
                                     } else {
                                         player1.setMoney(player1.getMoney() - 200);
                                         randNewspaper = ThreadLocalRandom.current().nextInt(1, 4);
+                                        startGame.generateCars(randNewspaper);
                                         System.out.println("Zyskałeś " + randNewspaper + " klienta/klientów.");
                                     }
                                     break;
@@ -193,6 +420,7 @@ public class Main {
                                         System.out.println("Nie stać cię.");
                                     } else {
                                         player1.setMoney(player1.getMoney() - 150);
+                                        startGame.generateCars(1);
                                         System.out.println("Zyskałeś 1 klienta.");
                                     }
                                     break;
@@ -202,6 +430,7 @@ public class Main {
                         case 8: System.out.println("Posiadasz:"+player1.getMoney()+"$");
                             break;
                         case 12: System.out.println("Następna tura.");
+                            startGame.generateCars(2);
                             playerTurn=true;
                             break;
                         case 13: System.out.println("Może kontynuować grę jeśli rozpoczniesz ją ponownie.");
@@ -220,16 +449,6 @@ public class Main {
                     break;
             }
         }
-        Integer menuChose = 0;
-        Integer choseAfterStart=0;
-        Integer playerMoney=1000;
-        Integer ammountOfCars=0;
-        Integer carsInPlayerGarage=0;
-        Integer chosenClient=0;
-        Integer clientMoney=0;
-        Integer adChose=0;
-        Integer i=0;
-        String smallOrBigCar;
          /*Now issues:
         1. There is chance that player won't have enought money for any car.
         3. Same things always break, no space between them.
@@ -238,12 +457,8 @@ public class Main {
         7. Player can't sell cars that are destroyed.
         8. Car after buy isn't removed from list, just change for a car that can't be bought or sold.
         10. Variables aren't private or protected.
-        11. Game progress can't be reset by menu
+        11. Game progress can't be reset by menu, but it's now possible.
          .*/
-    }
-    public String notAvailable()
-    {
-        return "Opcja nie dostępna w tej turze.";
     }
 }
 
