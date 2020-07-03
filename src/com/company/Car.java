@@ -1,6 +1,6 @@
 package com.company;
 
-public class Car<producers> {
+public class Car{
     public Integer price;
     public String producer;
     public Integer mileage;
@@ -35,15 +35,16 @@ public class Car<producers> {
         String space = "";
         if(loadingSpace>60)
         {
-            space=" , Dostawczak";
+            space=", Dostawczak";
         }
         else
         {
-            space= " , Osobowka";
+            space= ", Osobowka";
         }
-        return "Cena: " + price + "$ , Producent: " + producer + " , Przebieg: " + mileage + "km , Kolor: " + color + " , Segment: " + classification +
-                " , Status hamulcow: " + brakesStatus + " , Status zawieszenia: " + suspensionStatus + " , Status silnika: " + engineStatus +
-                " , Status koreserii: " + bodyStatus + " , Status skrzyni biegow: " + gearboxStatus + space;
+        return "Cena: " + price + "$, Producent: " + producer + ", Przebieg: " + mileage + "km, Kolor: " + color + ", Segment: " + classification +
+                ", Status hamulcow: " + brakesStatus + ", Status zawieszenia: " + suspensionStatus + ", Status silnika: " + engineStatus +
+                ", Status koreserii: " + bodyStatus + ", Status skrzyni biegow: " + gearboxStatus + space;
 
     }
 }
+
