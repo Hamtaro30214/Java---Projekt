@@ -1,6 +1,8 @@
 package com.company;
 
+
 public class Car{
+    public Integer carID;
     public Integer price;
     public String producer;
     public Integer mileage;
@@ -12,11 +14,13 @@ public class Car{
     public Boolean bodyStatus;
     public Boolean gearboxStatus;
     public Integer loadingSpace;
+    public Integer amountOfDestroyedParts;
 
 
-    public Car(Integer price, String producer, Integer mileage, String color, String classification,
-               Boolean brakesStatus, Boolean suspensionStatus, Boolean engineStatus, Boolean bodyStatus, Boolean gearboxStatus, Integer loadingSpace)
+    public Car(Integer carID,Integer price, String producer, Integer mileage, String color, String classification,
+               Boolean brakesStatus, Boolean suspensionStatus, Boolean engineStatus, Boolean bodyStatus, Boolean gearboxStatus, Integer loadingSpace, Integer amountOfDestroyedParts)
     {
+        this.carID=carID;
         this.price=price;
         this.producer=producer;
         this.mileage=mileage;
@@ -28,8 +32,8 @@ public class Car{
         this.bodyStatus=bodyStatus;
         this.gearboxStatus=gearboxStatus;
         this.loadingSpace=loadingSpace;
+        this.amountOfDestroyedParts=amountOfDestroyedParts;
     }
-
     public String toString()
     {
         String space = "";
@@ -41,9 +45,18 @@ public class Car{
         {
             space= ", Osobowka";
         }
-        return "Cena: " + price + "$, Producent: " + producer + ", Przebieg: " + mileage + "km, Kolor: " + color + ", Segment: " + classification +
+        return carID+". Cena: " + price + "$, Producent: " + producer + ", Przebieg: " + mileage + "km, Kolor: " + color + ", Segment: " + classification +
                 ", Status hamulcow: " + brakesStatus + ", Status zawieszenia: " + suspensionStatus + ", Status silnika: " + engineStatus +
                 ", Status koreserii: " + bodyStatus + ", Status skrzyni biegow: " + gearboxStatus + space;
 
     }
+    public String showBasicInfo()
+    {
+        return carID+". Cena:"+price +"$, Producent:"+producer+", Segment:"+classification+", Zepsute czesci:"+amountOfDestroyedParts;
+    }
 }
+
+        /*10% zwieskszona cena
+         double cena = 1000.0;
+        System.out.println(cena=cena +cena*0.1);
+*/

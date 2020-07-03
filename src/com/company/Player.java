@@ -1,6 +1,7 @@
 package com.company;
 
 import java.security.PublicKey;
+import java.util.ArrayList;
 
 public class Player {
     private Integer money;
@@ -20,6 +21,14 @@ public class Player {
     {
         this.garage[placeInGarage]=car;
     }
+    public Integer getMoney()
+    {
+        return this.money;
+    }
+    public void setMoney(Integer newMoney)
+    {
+        this.money=newMoney;
+    }
 
     public String toString()
     {
@@ -28,11 +37,5 @@ public class Player {
 
 
 
-    public void startGame()
-    {
-        label1:
-        System.out.println("Wybierz 1 aby zobaczyc samochody do kupna z podstawowymi informacjami.");
-        System.out.println("Wybierz 2 aby szczegolowe informacje o samochodach do kupna.");
-    }
-}
 
+}

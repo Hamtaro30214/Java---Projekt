@@ -1,8 +1,11 @@
 package com.company;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Client  {
+
     public Integer money;
     public String producer1;
     public String producer2;
@@ -23,4 +26,3 @@ public class Client  {
                 + typeOfCar+ ", Uszkodzony:" + destroyedCar;
     }
 }
-
