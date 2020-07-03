@@ -14,7 +14,6 @@ public class Car {
     public Boolean gearboxStatus;
     public Integer loadingSpace;
     public Integer amountOfDestroyedParts;
-    public Integer IDOfSoldCar;
 
     public Car(Integer carID, Integer price, String producer, Integer mileage, String color, String classification,
                Boolean brakesStatus, Boolean suspensionStatus, Boolean engineStatus, Boolean bodyStatus,
@@ -37,20 +36,33 @@ public class Car {
     public Integer getPrice() {return this.price;}
     public void setPrice(Integer cost) {this.price=cost;}
     public String toString() {
-        String space;
-        if (loadingSpace > 60) space = ", Dostawczak";
-        else  space = ", Osobówka";
-        return carID + ". Cena:" + price + "$, Producent:" + producer + ", Przebieg:" + mileage + "km, Kolor:" + color +
-                ", Segment:" + classification + space+", Status hamulców:" + brakesStatus +", Status zawieszenia:" +
-                suspensionStatus + ", Status silnika:" + engineStatus + ", Status koreserii:" + bodyStatus +
-                ", Status skrzyni biegów:" + gearboxStatus;
+        if(mileage!=null) {
+            String space;
+            if (loadingSpace > 60) space = "Dostawczak";
+            else space = "Osobówka";
+            return carID + ". Cena:" + price + "$, Producent:" + producer + ", Przebieg:" + mileage + "km, Kolor:" + color +
+                    ", Segment:" + classification + space + ", Status hamulców:" + brakesStatus + ", Status zawieszenia:" +
+                    suspensionStatus + ", Status silnika:" + engineStatus + ", Status koreserii:" + bodyStatus +
+                    ", Status skrzyni biegów:" + gearboxStatus;
+        }
+        return "Auto niedostępne.";
     }
     public String showBasicInfo() {
-        return carID + ". Cena:" + price + "$, Producent:" + producer + ", Segment:" + classification +
-                ", Zepsute części:" + amountOfDestroyedParts;
-    }
-    public String playersCarsBasic() {
-        return (IDOfSoldCar+1)+". Cena:"+price +"$, Producent:"+producer+", Segment:"+classification+
-                ", Zepsute czesci:"+amountOfDestroyedParts;
+        if(mileage!=null) {
+            if (!suspensionStatus) {
+                String space;
+                if (loadingSpace > 60) space = "Dostawczak";
+                else space = "Osobówka";
+                return carID + 1 + ". Cena:" + price + "$, Producent:" + producer + ", Segment:" + classification +
+                        "Typ samochodu:"+space+", Zepsute części:" + amountOfDestroyedParts + ", w tym zepsute zawieszenie.";
+            } else {
+                String space;
+                if (loadingSpace > 60) space = "Dostawczak";
+                else space = "Osobówka";
+                return carID + 1 + ". Cena:" + price + "$, Producent:" + producer + ", Segment:" + classification +
+                        ", Typ samochodu:"+space+", Zepsute części:" + amountOfDestroyedParts;
+            }
+        }
+        return "Auto niedostępne.";
     }
 }

@@ -13,7 +13,7 @@ public class Player {
 
     public Car getCar(Integer placeInGarage) {return this.garage.get(placeInGarage);}
     public void setCar(Car car) {this.garage.add(car);}
-    public void removeCar(Car car) {this.garage.remove(car);}
+    public void changeCar(Integer placeInGarage, Car car){this.garage.set(placeInGarage,car);}
     public Integer getMoney() {return this.money;}
     public void setMoney(Integer newMoney) {this.money=newMoney;}
 }

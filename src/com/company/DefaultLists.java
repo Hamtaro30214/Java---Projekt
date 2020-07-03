@@ -5,6 +5,11 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DefaultLists {
+    public String name;
+    public DefaultLists(String name) {
+        this.name=name;
+    }
+
     //DEFAULT VALUES/VARIABLES------------------------------------------------------------------------------------------
     static String randomProducer1, randomProducer2, typeOfCar, randomProducer, randomColor, randomClassification;
     static Integer randMoney=0, randIndex=0, trueOrFalse=0, randMileage=0, randLoadingSpace=0,lastCarID=0,
@@ -37,7 +42,7 @@ public class DefaultLists {
     //CLIENTS-----------------------------------------------------------------------------------------------------------
     public static ArrayList<Client> clients = new ArrayList<Client>();
     static {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             randMoney = ThreadLocalRandom.current().nextInt(1000, 2000);
             randIndex = rand.nextInt(DefaultLists.producers.size());
             randomProducer1 = producers.get(randIndex);
@@ -49,13 +54,14 @@ public class DefaultLists {
             destroyedCar = !(percent < 0.9);
             trueOrFalse = ThreadLocalRandom.current().nextInt(0, 2);
             if (trueOrFalse == 0) typeOfCar = "Dostawczak";
-            else typeOfCar = "Osobowka";
-            Client temporaryClient = new Client(randMoney, randomProducer1, randomProducer2, typeOfCar, destroyedCar);
+            else typeOfCar = "Osobówka";
+            Client temporaryClient = new Client(randMoney,i, randomProducer1, randomProducer2, typeOfCar, destroyedCar);
             clients.add(temporaryClient);
             //System.out.println("Klient:" + i + clients.get(i));
         }
     }
     //GENERATING RANDOM CARS--------------------------------------------------------------------------------------------
+    //public void generateCars()
     public static ArrayList<Car> carsToBuy = new ArrayList<Car>();
     static {
         numberOfStartingCars= ThreadLocalRandom.current().nextInt(5, 11);
